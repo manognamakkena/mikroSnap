@@ -1,87 +1,37 @@
 <html>
     <title>
-        snap!
+    choose a frame!
     </title>
-
-<head>
-  <link rel="preconnect" href="https://googleapis.com">
-  <link rel="preconnect" href="https://gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=IM+Fell+Great+Primer+SC&display=swap" rel="stylesheet">
-</head>
-
 <style>
 body
 {
     background-color: black;
 }
-button
+.frames
 {
-    cursor: pointer;
+    text-align: center;
 }
-.carousel
+.grid
 {
-    margin: 3em auto;
     display: flex;
-    gap: -10em ;
-    width: 100%;
-    overflow-x: auto;
-    anchor-name: --carousel;
-    scroll-snap-type: x mandatory;
-    scroll-marker-group: after;
-    justify-content: top;
-}
-
-.carousel::-webkit-scrollbar
-{
-    display: none;
-}
-
-.carousel::scroll-button(right), .carousel::scroll-button(left)
-{
-    content: "→";
-    font-family: "IM Fell Great Primer SC", serif;
-    border: none;
-    background-color: #3c0c4e;
-    font-size: 3rem;
-    color: #dfb6ef;
-    height: 60px;
-    width: 60px;
-    border-radius: 50%;
-    padding-bottom: 0.1em;
-    cursor: pointer; 
-    position: fixed;
-    position-anchor: --carousel;
-    position-area: right center;
-    translate: -50%;
-}
-
-.carousel::scroll-button(left)
-{
-    content: "←";
-    position-area: left center;
-    translate: 50%;
-}
-
-.carousel::scroll-button(right):disabled, .carousel::scroll-button(left)::disabled
-{
-    opacity: 0.25;
-    cursor: auto;
-}
-
-.frame
-{
-    scale: 50%;
-    flex: 0 0 20em;
-    scroll-snap-align: start;
+    padding: 20px;
+    gap: 20px;
 }
 </style>
 
-<div class="carousel">
-   <img class="frame" src="assets/tempFrame.png">
-   <img class="frame" src="assets/tempFrame.png">
-   <img class="frame" src="assets/tempFrame.png">
-   <img class="frame" src="assets/tempFrame.png">
-   <img class="frame" src="assets/tempFrame.png">
-   <img class="frame" src="assets/tempFrame.png">
+ 
+<div class="grid">
+    <div class="frame-option classic" onclick="selectFrame('classic')">
+        <img src="assets/tempFrame.png" width="100%" height="auto">
+    </div>
+    <div class="frame-option single" onclick="selectFrame('single')">
+        <img src="assets/tempf2.png" width="100%" height="auto">
+    </div>
+    <div class="frame-option film" onclick="selectFrame('film')">
+        <img src="assets/tempf3.png" width="100%" height="auto">
+    </div>
 </div>
+
+
+
 </html>
