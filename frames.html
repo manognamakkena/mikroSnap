@@ -7,31 +7,48 @@ body
 {
     background-color: black;
 }
-.frames
+
+.carousel
 {
-    text-align: center;
-}
-.grid
-{
+    margin: 0.3em auto;
     display: flex;
-    padding: 20px;
-    gap: 20px;
+    width: 100%;
+    overflow-x: auto;
+    anchor-name: --carousel;
+    scroll-snap-type: x mandatory;
+    scroll-marker-group: after;
+    justify-content: center;
+    align-items: center;
+    gap: 3em;
 }
+
+.carousel::-webkit-scrollbar
+{
+    display: none;
+}
+
+.frame
+{
+    object-fit: contain;
+    scroll-snap-align: start;
+    flex-shrink: 0;
+    align-self: center;
+}
+ 
 </style>
 
- 
-<div class="grid">
-    <div class="frame-option classic" onclick="selectFrame('classic')">
-        <img src="assets/tempFrame.png" width="100%" height="auto">
-    </div>
-    <div class="frame-option single" onclick="selectFrame('single')">
-        <img src="assets/tempf2.png" width="100%" height="auto">
-    </div>
-    <div class="frame-option film" onclick="selectFrame('film')">
-        <img src="assets/tempf3.png" width="100%" height="auto">
-    </div>
+<div class="carousel">
+   <img class="frame" src="assets/tempFrame.png" onclick="selectFrame('classic')" width="20%" height=auto>
+   <img class="frame" src="assets/tempf2.png" onclick="selectFrame('single')" width="20%" height=auto>
+   <img class="frame" src="assets/tempf3.png" onclick="selectFrame('film')" width="46%" height=auto>
 </div>
 
 
-
+<script>
+    function selectFrame(styleName) 
+    {
+      localStorage.setItem('selectedFrame', styleName);
+      window.location.href = 'snap.html';
+    }
+</script>
 </html>
