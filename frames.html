@@ -10,7 +10,7 @@ body
 
 .carousel
 {
-    margin: 0.3em auto;
+    margin-top:10%;
     display: flex;
     width: 100%;
     overflow-x: auto;
@@ -19,7 +19,7 @@ body
     scroll-marker-group: after;
     justify-content: center;
     align-items: center;
-    gap: 3em;
+    gap: 20em;
 }
 
 .carousel::-webkit-scrollbar
@@ -38,9 +38,8 @@ body
 </style>
 
 <div class="carousel">
-   <img class="frame" src="assets/tempFrame.png" onclick="selectFrame('classic')" width="20%" height=auto>
-   <img class="frame" src="assets/tempf2.png" onclick="selectFrame('single')" width="20%" height=auto>
-   <img class="frame" src="assets/tempf3.png" onclick="selectFrame('film')" width="46%" height=auto>
+   <img class="frame" src="assets/classic_overlay.png" onclick="selectFrame('classic')" width="10%" height=auto>
+   <img class="frame" src="assets/film_overlay.png" onclick="selectFrame('film')" width="10%" height=auto>
 </div>
 
 

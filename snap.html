@@ -1,19 +1,326 @@
 <html>
-    <title>
-        snap!
-    </title>
+<head>
+<title>
+    snap!
+</title>
 
 <style>
-body
-{
-    background-color: black;
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    background:#111;
+    color:white;
+    font-family:Arial,Helvetica,sans-serif;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    height:100vh;
+    gap:40px;
+}
+
+.left{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+}
+
+video{
+    width:640px;
+    border-radius:10px;
+    background:black;
+}
+
+button{
+    margin-top:20px;
+    padding:12px 24px;
+    font-size:18px;
+    cursor:pointer;
+    background-color: #3c0c4e;
+    color: #dfb6ef;
+    border: none;
+    border-radius: 25px;
+    display: flex;
+}
+
+#countdown{
+    margin-top:15px;
+    font-size:50px;
+    color: #dfb6ef;
+}
+
+.preview{
+    position:relative;
+}
+
+.frameCanvas{
+    position:absolute;
+    left:0;
+    top:0;
+    pointer-events:none;
+}
+
+.slot{
+    position:absolute;
+    overflow:hidden;
+}
+
+.slot img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    display:block;
+}
+.frameCanvas{
+    width:100%;
+    height:100%;
 }
 </style>
 
+</head>
+<body>
+
+    <div class="left">
+        <video id="video" autoplay playsinline style="transform: scaleX(-1);"></video>
+        <div id="countdown"></div>
+        <button id="startBtn">snap!</button>
+    </div>
+
+    <div class="preview" id="preview"></div>
+
+<script>
+
+const frame = localStorage.getItem("selectedFrame") || "classic";
+
+const video = document.getElementById("video");
+const preview = document.getElementById("preview");
+const countdown = document.getElementById("countdown");
+
+let photos = [];
+
+let config;
+
+if(frame=="classic"){
+
+config={
+    width:165,
+    height:508,
+    frameImage:"assets/classic_overlay.png",
+    slots:[
+        {x:20,y:15,w:129,h:95},
+        {x:20,y:125,w:129,h:95},
+        {x:20,y:225,w:129,h:95},
+        {x:20,y:325,w:129,h:95}
+    ]
+}
+
+}
 
 
+if(frame=="film"){
 
+config={
+    width:224,
+    height:626,
+    frameImage:"assets/film_overlay.png",
+    slots:[
+        {x:15,y:40,w:145,h:180},
+        {x:190,y:40,w:145,h:180},
+        {x:365,y:40,w:145,h:180},
+        {x:540,y:40,w:145,h:180},
+        {x:715,y:40,w:145,h:180}
+    ]
+}
 
+}
 
+async function startCamera(){
 
+const stream=await navigator.mediaDevices.getUserMedia({
+video:true
+});
+
+video.srcObject=stream;
+
+}
+
+startCamera();
+
+createPreview();
+
+function createPreview(){
+
+preview.style.width=config.width+"px";
+preview.style.height=config.height+"px";
+
+config.slots.forEach(s=>{
+
+const d=document.createElement("div");
+
+d.className="slot";
+
+d.style.left=s.x+"px";
+d.style.top=s.y+"px";
+d.style.width=s.w+"px";
+d.style.height=s.h+"px";
+
+preview.appendChild(d);
+
+});
+
+const overlay=document.createElement("img");
+
+overlay.src=config.frameImage;
+overlay.className="frameCanvas";
+
+overlay.width=config.width;
+overlay.height=config.height;
+
+preview.appendChild(overlay);
+
+}
+
+async function begin(){
+
+photos=[];
+
+const slots=document.querySelectorAll(".slot");
+
+slots.forEach(s=>s.innerHTML="");
+
+for(let i=0;i<config.slots.length;i++){
+
+await takeWithCountdown();
+
+const img=document.createElement("img");
+
+img.src=photos[i];
+
+slots[i].appendChild(img);
+
+}
+
+}
+
+document.getElementById("startBtn").onclick=begin;
+
+async function takeWithCountdown(){
+
+for(let i=3;i>0;i--){
+
+countdown.innerHTML=i;
+
+await sleep(1000);
+
+}
+
+countdown.innerHTML="📸";
+
+capture();
+
+await sleep(500);
+
+countdown.innerHTML="";
+
+}
+
+function capture(){
+
+const canvas=document.createElement("canvas");
+
+canvas.width=video.videoWidth;
+
+canvas.height=video.videoHeight;
+
+const ctx=canvas.getContext("2d");
+ctx.translate(canvas.width, 0);
+ctx.scale(-1, 1);
+ctx.drawImage(video, 0, 0);
+
+photos.push(canvas.toDataURL("image/png"));
+
+}
+
+function sleep(ms){
+
+return new Promise(r=>setTimeout(r,ms));
+
+}
+
+function downloadStrip(){
+
+const canvas=document.createElement("canvas");
+
+canvas.width=config.width;
+canvas.height=config.height;
+
+const ctx=canvas.getContext("2d");
+
+let loaded=0;
+
+const images=[];
+
+for(let i=0;i<photos.length;i++){
+
+const img=new Image();
+
+img.onload=()=>{
+
+loaded++;
+
+images[i]=img;
+
+if(loaded===photos.length){
+
+draw();
+
+}
+
+}
+
+img.src=photos[i];
+
+}
+
+function draw(){
+
+config.slots.forEach((s,i)=>{
+
+ctx.drawImage(images[i],s.x,s.y,s.w,s.h);
+
+});
+
+const frameImg=new Image();
+
+frameImg.onload=()=>{
+
+ctx.drawImage(frameImg,0,0,config.width,config.height);
+
+const link=document.createElement("a");
+
+link.download="photobooth.png";
+
+link.href=canvas.toDataURL();
+
+link.click();
+
+}
+
+frameImg.src=config.frameImage;
+
+}
+
+}
+
+    const download=document.createElement("button");
+    download.innerHTML="get photo strip!";
+    download.onclick=downloadStrip;
+    document.querySelector(".left").appendChild(download);
+
+</script>
+
+</body>
 </html>
