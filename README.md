@@ -1,1 +1,1 @@
-# SilverStrip
+# mikroSnap
