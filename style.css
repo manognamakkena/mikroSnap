@@ -1,0 +1,75 @@
+.index{
+    background-color: #CF0F0F;
+}
+
+.logo-container{
+    display: flex;
+    width: 100%;
+    overflow: visible;
+    margin: 0 auto;
+
+}
+.Logo{
+    margin-left: 23%;
+    margin-right: auto;
+    display: block;
+    margin-top: 10%;
+    margin-bottom: auto;
+    width: 650px;
+    height: auto;
+    flex-shrink: 0;
+    object-fit: contain;
+}
+
+.snap-button
+{
+  background-color: #000000;
+  border: none;
+  color: #000000;
+  text-align: center;
+  justify-content: center;
+  font-family: "IM Fell Great Primer SC", serif;
+  display: inline-block;
+  font-size: 20px;
+  cursor: pointer;
+  position: relative;
+  top: 56%;
+  bottom: 40%;
+  left: 45%;
+  border-radius: 15px;
+  padding: 7px;
+  width: 90px;
+  margin-top: 10%;
+}
+
+.framesBody
+{
+    background-color: #CF0F0F;
+}
+
+.carousel
+{
+    margin-top:10%;
+    display: flex;
+    width: 100%;
+    overflow-x: auto;
+    anchor-name: --carousel;
+    scroll-snap-type: x mandatory;
+    scroll-marker-group: after;
+    justify-content: center;
+    align-items: center;
+    gap: 10em;
+}
+
+.carousel::-webkit-scrollbar
+{
+    display: none;
+}
+
+.frame
+{
+    object-fit: cover;
+    scroll-snap-align: start;
+    flex-shrink: 0;
+    align-self: center;
+}
