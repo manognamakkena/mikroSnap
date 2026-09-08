@@ -4,28 +4,13 @@
         <meta name="viewport" content="width=device-width,height=device-height, intial-scale=1.0">
 
         <link rel="stylesheet" href="style.css">
+        <script src="script.js"></script>
     </head>
 
     <title>
     choose a frame!
     </title>
  
-    <body class="framesBody">
-        <div class="carousel">
-            <img class="frame" src="assets\maroon.png" onclick="selectFrame('maroon')" width="10%" height=auto>
-            <img class="frame" src="assets\white.png" onclick="selectFrame('white')" width="10%" height=auto>
-            <img class="frame" src="assets\black.png" onclick="selectFrame('black')" width="10%" height=auto>
-            <img class="frame" src="assets\maroonFrame_edited.png" onclick="selectFrame('maroonE')" width="10%" height=auto>
-            <img class="frame" src="assets\blackEdited.png" onclick="selectFrame('blackE')" width="10%" height=auto>
-        </div>
-    </body>
-
-    <script>
-        function selectFrame(styleName) 
-        {
-            localStorage.setItem('selectedFrame', styleName);
-            window.location.href = 'snap.html';
-        }
-    </script>
+    
     
 </html>

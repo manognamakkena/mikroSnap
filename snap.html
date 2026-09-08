@@ -1,343 +1,39 @@
 <html>
+
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,height=device-height, intial-scale=1.0">
+
     <link rel="preconnect" href="https://googleapis.com">
     <link rel="preconnect" href="https://gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=IM+Fell+Great+Primer+SC&display=swap" rel="stylesheet">
-<title>
-    snap!
-</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="script.js"></script>
 
-<style>
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-}
 
-body{
-    background-color:#CF0F0F;
-    color:white;
-    font-family:Arial,Helvetica,sans-serif;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    height:100vh;
-    gap: 200px;
-}
-
-.left{
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-}
-
-video{
-    width:640px;
-    border-radius:10px;
-    background:black;
-}
-
-button{
-    margin-top:20px;
-    padding:10px 23px;
-    font-size:18px;
-    cursor:pointer;
-    background-color: #ffffff;
-    color: #000000;
-    border: none;
-    border-radius: 20px;
-    display: flex;
-}
-
-#countdown{
-    margin-top:15px;
-    font-size:30px;
-    color: #ffffff;
-}
-
-.preview{
-    position:relative;
-}
-
-.frameCanvas{
-    position:absolute;
-    left:0;
-    top:0;
-    pointer-events:none;
-}
-
-.slot{
-    position:absolute;
-    overflow:hidden;
-}
-
-.slot img{
-    width:100%;
-    height:100%;
-    object-fit:cover;
-    display:block;
-}
-.frameCanvas{ /*frame sizing*/
-    width:100%;
-    height:100%;
-}
-</style>
-
+    <title> snap! </title>
 </head>
-<body>
 
-    <div class="left">
-        <video id="video" autoplay playsinline style="transform: scaleX(-1);"></video>
-        <div id="countdown"></div>
-        <button id="startBtn">snap!</button>
-    </div>
-
-    <div class="preview" id="preview"></div>
-
-
-<script>
-
-    const frame = localStorage.getItem("selectedFrame");
-    const video = document.getElementById("video");
-    const preview = document.getElementById("preview");
-    const countdown = document.getElementById("countdown");
-
-    let photos = [];
-
-    let config;
-
-    if(frame=="maroonE"){
-
-        config={
-            width:165,
-            height:508,
-            frameImage:'assets/maroonFrame_edited.png',
-            slots:
-            [
-                {x:10,y:15,w:145,h:101},
-                {x:10,y:129,w:145,h:101},
-                {x:10,y:240,w:145,h:101},
-                {x:10,y:352,w:145,h:101}
-            ]
-        }
-    }
-
-    if(frame=="blackE"){
-
-        config={
-            width:165,
-            height:508,
-            frameImage:"assets/blackEdited.png",
-             slots:[
-                {x:10,y:15,w:145,h:101},
-                {x:10,y:129,w:145,h:101},
-                {x:10,y:240,w:145,h:101},
-                {x:10,y:352,w:145,h:101}
-            ]
-        }
-    }
-
-    if(frame=="white"){
-
-        config={
-            width:165,
-            height:508,
-            frameImage:"assets/white.png",
-             slots:[
-                {x:10,y:15,w:145,h:101},
-                {x:10,y:129,w:145,h:101},
-                {x:10,y:240,w:145,h:101},
-                {x:10,y:352,w:145,h:101}
-            ]
-        }
-    }
-
-    if(frame=="black"){
-
-        config={
-            width:165,
-            height:508,
-            frameImage:"assets/black.png",
-             slots:[
-                {x:10,y:15,w:145,h:101},
-                {x:10,y:129,w:145,h:101},
-                {x:10,y:240,w:145,h:101},
-                {x:10,y:352,w:145,h:101}
-            ]
-        }
-    }
-
-    if(frame=="maroon"){
-
-        config={
-            width:165,
-            height:508,
-            frameImage:"assets/maroon.png",
-             slots:[
-                {x:10,y:15,w:145,h:101},
-                {x:10,y:129,w:145,h:101},
-                {x:10,y:240,w:145,h:101},
-                {x:10,y:352,w:145,h:101}
-            ]
-        }
-    }
-    
-    async function startCamera()
-    {
-        const stream=await navigator.mediaDevices.getUserMedia({video:true});
-        video.srcObject=stream;
-    }
-
-    startCamera();
-    createPreview();
-
-    function createPreview()
-    {
-        preview.style.width=config.width+"px";
-        preview.style.height=config.height+"px";
-
-        config.slots.forEach(s=>
-        {
-            const d=document.createElement("div");
-
-            d.className="slot";
-
-            d.style.left=s.x+"px";
-            d.style.top=s.y+"px";
-            d.style.width=s.w+"px";
-            d.style.height=s.h+"px";
-
-            preview.appendChild(d);
-
-        });
-
-        const overlay=document.createElement("img");
-
-        overlay.src=config.frameImage;
-        overlay.className="frameCanvas";
-
-        overlay.width=config.width;
-        overlay.height=config.height;
-
-        preview.appendChild(overlay);
-
-    }
-
-    async function begin()
-    {
-        photos=[];
-        
-        const slots=document.querySelectorAll(".slot");
-        slots.forEach(s=>s.innerHTML="");
-
-        for(let i=0;i<config.slots.length;i++)
-        {
-            await takeWithCountdown();
-            const img=document.createElement("img");
-            img.src=photos[i];
-            slots[i].appendChild(img);
-        }
-
-    }
-
-    document.getElementById("startBtn").onclick=begin;
-
-    async function takeWithCountdown()
-    {
-        for(let i=3;i>0;i--)
-        {
-            countdown.innerHTML=i;
-            await sleep(1000);
-        }
-
-        countdown.innerHTML="📸";
-
-        capture();
-        await sleep(500);
-        countdown.innerHTML="";
-    }
-
-    function capture()
-    {
-        const canvas=document.createElement("canvas");
-
-        canvas.width=video.videoWidth;
-        canvas.height=video.videoHeight;
-
-        const ctx=canvas.getContext("2d");
-        ctx.translate(canvas.width, 0);
-        ctx.scale(-1, 1);
-        ctx.drawImage(video, 0, 0);
-
-        photos.push(canvas.toDataURL("image/png"));
-    }
-
-    function sleep(ms)
-    {
-        return new Promise(r=>setTimeout(r,ms));
-    }
-
-    function downloadStrip()
-    {
-        const canvas=document.createElement("canvas");
-
-        canvas.width=config.width;
-        canvas.height=config.height;
-
-        const ctx=canvas.getContext("2d");
-
-        let loaded=0;
-        const images=[];
-
-        for(let i=0;i<photos.length;i++)
-        {
-            const img=new Image();
-
-            img.onload=()=>
-            {
-                loaded++;   
-                images[i]=img;
-
-                if(loaded===photos.length)
-                {
-                    draw();
-                }
-            }
-
-            img.src=photos[i];
-        }
-
-        function draw()
-        {
-            config.slots.forEach((s,i)=>
-            {
-                ctx.drawImage(images[i],s.x,s.y,s.w,s.h);
-            });
-
-            const frameImg=new Image();
-
-            frameImg.onload=()=>
-            {
-                ctx.drawImage(frameImg,0,0,config.width,config.height);
-
-                const link=document.createElement("a");
-                link.download="photobooth.png";
-                link.href=canvas.toDataURL();
-                link.click();
-
-            }
-
-            frameImg.src=config.frameImage;
-        }
-
-    }
-
-    const download=document.createElement("button");
-    download.innerHTML="get photo strip!";
-    download.onclick=downloadStrip;
-    document.querySelector(".left").appendChild(download);
-
-</script>
+<body class="snapBody">
+    <section class="container">
+        <div class="slider-wrapper">
+            <div class="slider">
+                <img id="frame-1" src="assets\white.png">
+                <img id="frame-2" src="assets\black.png">
+                <img id="frame-3" src="assets\maroon.png">
+                <img id="frame-4" src="assets\blackEdited.png">
+                <img id="frame-5" src="assets\maroonFrame_edited.png">
+            </div>
+            <div class="slider-nav">
+                <a href="#frame-1"></a>
+                <a href="#frame-2"></a>
+                <a href="#frame-3"></a>
+                <a href="#frame-4"></a>
+                <a href="#frame-5"></a>
+            </div>
+        </div>
+    </section>
+</body>
 
 </body>
 </html>
