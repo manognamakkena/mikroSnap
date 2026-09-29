@@ -2,38 +2,22 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width,height=device-height, intial-scale=1.0">
+    <meta name="viewport" content="width=device-width,height=device-height, initial-scale=1.0">
 
     <link rel="preconnect" href="https://googleapis.com">
     <link rel="preconnect" href="https://gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=IM+Fell+Great+Primer+SC&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
-    <script src="script.js"></script>
-
+    <script src="script.js" defer></script>
 
     <title> snap! </title>
 </head>
-
 <body class="snapBody">
-    <section class="container">
-        <div class="slider-wrapper">
-            <div class="slider">
-                <img id="frame-1" src="assets\white.png">
-                <img id="frame-2" src="assets\black.png">
-                <img id="frame-3" src="assets\maroon.png">
-                <img id="frame-4" src="assets\blackEdited.png">
-                <img id="frame-5" src="assets\maroonFrame_edited.png">
-            </div>
-            <div class="slider-nav">
-                <a href="#frame-1"></a>
-                <a href="#frame-2"></a>
-                <a href="#frame-3"></a>
-                <a href="#frame-4"></a>
-                <a href="#frame-5"></a>
-            </div>
-        </div>
-    </section>
-</body>
-
+    <div class="container">
+        <video id="video" width="300" height="500" autoplay playsinline></video>
+        <button id="snap">SNAP</button>
+    </div> 
+    <div class="camera-snapshot" id="camera-snapshot">
+</div>
 </body>
 </html>

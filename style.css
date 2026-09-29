@@ -1,5 +1,9 @@
+html, body{
+    overflow: hidden;
+}
+
 .index{
-    background-color: #CF0F0F;
+    background-color: #000000;
 }
 
 .logo-container{
@@ -23,9 +27,9 @@
 
 .snap-button
 {
-  background-color: #000000;
+  background-color: #ffffff;
   border: none;
-  color: #ffffff;
+  color: #000000;
   text-align: center;
   justify-content: center;
   font-family: "Castoro Titling", serif;
@@ -44,39 +48,122 @@
 
 .framesBody
 {
-    background-color: #CF0F0F;
+    background-color: #000000;
 }
+
+.frame{
+    flex: 0 0 100%;
+    scroll-snap-align: center;
+    display: grid;
+    place-items: center;
+    position: relative;
+    box-sizing: border-box;
+    justify-content: center;
+    align-items: center;
+    align-self: center;
+    scale: 70%;
+    gap: 20px;
+}
+
+.frame img {
+    grid-area: 1/1;
+    z-index: 2;
+}
+
+.tray{
+    grid-area: 1/1;
+    width: 130%;
+    height: 110%;
+    background: linear-gradient(45deg, #3b3939,#636363);
+    z-index: 1;
+}
+
+.carousel{
+    display: flex;
+    align-items: center;
+    align-content: center;
+    margin: 0 auto;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: snap;
+    overflow-x: auto;
+    width: 350px;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+    anchor-name: --frame-carousel;
+}
+
+.carousel::-webkit-scrollbar{
+    display: none;
+}
+
+.carousel::scroll-button(*){
+    position: absolute;
+    position-anchor: --frame-carousel;
+    align-self: anchor-center;
+    border-radius: 25px;
+    border: none;
+    font-size: 2rem;
+    color: none;
+    place-items: center;
+    z-index: 30;
+} 
+
+.carousel::scroll-button(left){
+    content: "◄" / "Previous";
+    position-area: left center;
+    translate: 100% 0;
+
+}
+
+.carousel::scroll-button(right){
+    content: "►" / "Previous";
+    align-content: center;
+    position-area: right center;
+    translate: -100% 0;
+}
+
 
 .snapBody{
     background-color: #000000;
 }
 
-.container{
-    padding: 5rem;
-
-}
-
-.slider-wrapper{
-    position: relative;
-    max-width: 10 rem;
-    margin: 0 auto;
-}
-
-.slider{
-    color: #fff;
+.camera-video{
+    width:100%;
     display: flex;
-    width: 25 rem;
-    height: auto;
-    overflow-x: auto;
-    scroll-snap-type: x mandatory;   
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 
-.slider img{
-    flex: 0.5 0 10%;
-    scroll-snap-align: center;
-    object-fit: cover;
+.video{
+    margin: 8px 2px;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px
 }
 
-.slider::-webkit-scrollbar{
-    display: none;
+.container{
+    align-items: center;
+    justify-content: center;
+    margin-left: 35%;
+    border-radius: 10px;
+}
+
+.snap{
+    background-color: #000000;
+    padding: 15px;
+}
+
+.snap:hover{
+    background-color: #ff0000
+}
+
+.camera-snapshot{
+    background-color: #ffffff;
+    height: 200px;
+    margin: auto;
+    width: 95%;
+    display: flex;
+    overflow-x: scroll;
+    padding: 3px 1.5px;
 }
