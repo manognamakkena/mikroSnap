@@ -118,4 +118,22 @@ if (video && cameraShot) {
 
         cameraShot.appendChild(stripCanvas);
     }
+
+    document.getElementById('download').addEventListener("click",function() {
+        if (takenPhotos.length === 0) {
+            alert('please take a photo first!');
+            return;
+        }
+
+        const downloadCanvas = cameraShot.querySelector('canvas');
+
+        const dataURL = downloadCanvas.toDataURL('image/png');
+
+        const link = document.createElement('a');
+        link.href = dataURL;
+        link.download = 'mikroSnap.png';
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
+    })
 }

@@ -171,3 +171,31 @@ html, body{
     margin-left: 10%;
     margin-top: -10.5%;
 }
+
+.instructions{
+    font-family: "Castoro Titling", serif;
+    color: #ffffff;
+    position: absolute;
+    font-size: 20px;
+    justify-content: center;
+    margin-top: -10%;
+    margin-left: 30%;
+}
+
+.download{
+    background-color: #ffffff;
+    border: none;
+    color: #000000;
+    text-align: center;
+    margin-left: 25%;
+    font-family: "Castoro Titling", serif;
+    display: inline-block;
+    font-size: 20px;
+    cursor: pointer;
+    position: relative;
+    border-radius: 15px;
+    padding: 7px;
+    width: 95px;
+    margin-top: 8%;
+    margin-left: 67.5%;
+}
