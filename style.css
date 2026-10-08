@@ -118,21 +118,6 @@ html, body{
     background-image: radial-gradient( #696666 2%, #000000 80%);
 }
 
-.camera-video{
-    width:100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-}
-
-.video{
-    margin: 8px 2px;
-    align-items: center;
-    justify-content: center;
-    border-radius: 10px
-}
-
 .wrapper{
     display: flex;
     flex-direction: row;
@@ -169,9 +154,20 @@ html, body{
     background-color: transparent;
     display: flex;
     line-height: 0;
+    position: absolute;
+    margin-left: 60%;
+    margin-top: 10%;
 }
 
 .camera-snapshot canvas{
     max-height: 100%;
-    width: auto'
+    width: auto;
+}
+
+.timer{
+    position: absolute;
+    font-size: 70px;
+    justify-content: center;
+    margin-left: 10%;
+    margin-top: -10.5%;
 }

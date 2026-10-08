@@ -37,9 +37,51 @@ if (video && cameraShot) {
         {x: 5, y: 532,w: 232, h: 174}
     ]
 
-    document.getElementById('snap').addEventListener("click",function() {
-        if (takenPhotos.length >= 4) return;
+    let isCountingDown = false;
 
+    document.getElementById('snap').addEventListener("click",function() {
+        if (takenPhotos.length >= 4 || isCountingDown) return;
+
+        isCountingDown = true;
+        photoSequence();
+    });
+
+    function photoSequence() {
+        if (takenPhotos.length >= 4) {
+            isCountingDown = false;
+            return;
+        }
+
+        let count=3;
+        const timerDisplay = document.getElementById('timer');
+        timerDisplay.innerText = count;
+
+        const countdownInterval = setInterval(() => {
+            count--;
+
+            if (count>0) {
+                timerDisplay.innerText = count;
+            }
+
+            else {
+                clearInterval(countdownInterval);
+                timerDisplay.innerText = '';
+
+                takeSnapshot();
+
+                if (takenPhotos.length < 4) {
+                    setTimeout(() => {
+                        photoSequence();
+                    }, 1000);
+                }
+                else {
+                    isCountingDown = false;
+                }
+            }
+        }, 1000);
+    };
+
+    function takeSnapshot() {
         const snapshotCanvas = document.createElement('canvas');
         snapshotCanvas.width = video.videoWidth || 640;
         snapshotCanvas.height = video.videoHeight || 480;
@@ -52,7 +94,7 @@ if (video && cameraShot) {
         takenPhotos.push(snapshotCanvas);
 
         renderFrameOverlay();
-    });
+    };
 
     function renderFrameOverlay(){
         cameraShot.innerHTML = '';
