@@ -1,28 +1,79 @@
 var video = document.getElementById('video');
 var cameraShot = document.getElementById('camera-snapshot');
-var canvasShot = document.getElementById('canvas');
 
+//get selected frame
+document.querySelectorAll('.carousel .frame img').forEach(img => {
+    img.addEventListener('click', () => {
+        localStorage.setItem('selectedFrame', img.getAttribute('src'));
+        window.location.href = 'snap.html';
+    })
+})
 
-if(navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+const selectedFrameSrc = localStorage.getItem('selectedFrame');
+const frameImage = selectedFrameSrc ? new Image() : null;
+
+if (frameImage) {
+    frameImage.src = selectedFrameSrc;
+}
+
+const takenPhotos = [];
+
+//camera
+if (video && cameraShot) {
+    if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
     navigator.mediaDevices.getUserMedia({video: true}).then(function(stream) {
         video.srcObject = stream;
         video.play()
     })
+    }
+
+    //mirror
+    video.style.transform = 'scaleX(-1)';
+
+    const slots = [
+        {x: 5, y: 10, w: 232, h: 174},
+        {x: 5, y: 184, w: 232, h: 174},
+        {x: 5, y: 358, w: 232, h: 174},
+        {x: 5, y: 532,w: 232, h: 174}
+    ]
+
+    document.getElementById('snap').addEventListener("click",function() {
+        if (takenPhotos.length >= 4) return;
+
+        const snapshotCanvas = document.createElement('canvas');
+        snapshotCanvas.width = video.videoWidth || 640;
+        snapshotCanvas.height = video.videoHeight || 480;
+        const snapContext = snapshotCanvas.getContext('2d');
+        
+        snapContext.translate(snapshotCanvas.width, 0);
+        snapContext.scale(-1,1);
+        snapContext.drawImage(video, 0, 0, snapshotCanvas.width, snapshotCanvas.height);
+
+        takenPhotos.push(snapshotCanvas);
+
+        renderFrameOverlay();
+    });
+
+    function renderFrameOverlay(){
+        cameraShot.innerHTML = '';
+
+        const stripCanvas = document.createElement('canvas');
+        const ctx = stripCanvas.getContext('2d');
+
+        stripCanvas.width = frameImage && frameImage.naturalWidth ? frameImage.naturalWidth : 145;
+        stripCanvas.height = frameImage && frameImage.naturalHeight ? frameImage.naturalHeight: 370;
+
+        takenPhotos.forEach((photoCanvas, index) => {
+            if(slots[index]){
+                const slot = slots[index];
+                ctx.drawImage(photoCanvas, slot.x, slot.y, slot.w, slot.h)
+            }
+        });
+
+        if(frameImage && frameImage.complete && frameImage.naturalWidth > 0) {
+            ctx.drawImage(frameImage, 0, 0, stripCanvas.width, stripCanvas.height);
+        }
+
+        cameraShot.appendChild(stripCanvas);
+    }
 }
-
-video.style.transform = 'scaleX(-1)';
-
-document.getElementById('snap').addEventListener("click",function() {
-    var canvas = document.createElement('canvas');
-    var context = canvas.getContext('2d')
-    
-    canvas.style.transform = 'scaleX(-1)';
-    canvas.width = 145;
-    canvas.height = 101;
-    canvas.className = 'canvas';
-    canvas.style.margin = '0px 1.5px';
-    context.save();
-
-    cameraShot.appendChild(canvas);
-    context.drawImage(video, 0, 0, 145, 101)
-})

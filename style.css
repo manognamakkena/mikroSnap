@@ -48,7 +48,7 @@ html, body{
 
 .framesBody
 {
-    background-color: #000000;
+    background-image: radial-gradient( #696666 2%, #000000 80%);
 }
 
 .frame{
@@ -70,19 +70,12 @@ html, body{
     z-index: 2;
 }
 
-.tray{
-    grid-area: 1/1;
-    width: 130%;
-    height: 110%;
-    background: linear-gradient(45deg, #3b3939,#636363);
-    z-index: 1;
-}
-
 .carousel{
     display: flex;
     align-items: center;
     align-content: center;
     margin: 0 auto;
+    transform: translateY(-10%);
     scroll-snap-type: x mandatory;
     scroll-behavior: snap;
     overflow-x: auto;
@@ -112,7 +105,6 @@ html, body{
     content: "◄" / "Previous";
     position-area: left center;
     translate: 100% 0;
-
 }
 
 .carousel::scroll-button(right){
@@ -122,9 +114,8 @@ html, body{
     translate: -100% 0;
 }
 
-
 .snapBody{
-    background-color: #000000;
+    background-image: radial-gradient( #696666 2%, #000000 80%);
 }
 
 .camera-video{
@@ -142,28 +133,45 @@ html, body{
     border-radius: 10px
 }
 
+.wrapper{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 25px;
+}
 .container{
     align-items: center;
     justify-content: center;
-    margin-left: 35%;
+    margin-left: 30%;
+    margin-top: -5%;
     border-radius: 10px;
 }
 
-.snap{
-    background-color: #000000;
-    padding: 15px;
-}
-
-.snap:hover{
-    background-color: #ff0000
+.shutter{
+    background-color: #ffffff;
+    border: none;
+    color: #000000;
+    text-align: center;
+    margin-left: 25%;
+    font-family: "Castoro Titling", serif;
+    display: inline-block;
+    font-size: 20px;
+    cursor: pointer;
+    position: relative;
+    border-radius: 15px;
+    padding: 7px;
+    width: 90px;
+    margin-top: -10%;
 }
 
 .camera-snapshot{
-    background-color: #ffffff;
-    height: 200px;
-    margin: auto;
-    width: 95%;
+    scale: 60%;
+    background-color: transparent;
     display: flex;
-    overflow-x: scroll;
-    padding: 3px 1.5px;
+    line-height: 0;
+}
+
+.camera-snapshot canvas{
+    max-height: 100%;
+    width: auto'
 }
