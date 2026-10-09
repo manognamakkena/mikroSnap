@@ -6,6 +6,8 @@ you can then download the polaroid strip. you cannot download without taking atl
 you can reload to start over. 
 the page is not resize-friendly(yet). i hope to make resize and mobile friendly in the future.
 
+to run locally clone the repo and run using a live server (or open index.html in a browser)
+
 first time using and experimenting with javascript. 
 AI has been used to learn, understand and debug the script. the code itself still remains mostly mine.
 
